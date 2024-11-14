@@ -5,9 +5,9 @@ resource "aws_s3_bucket" "terraform_state" {
 	bucket = "tf-up-and-running-state-example"
 	# Prevent accidental deletion of this S3 bucket
 	# Comment this line will delete when use terraform destroy
-	lifecycle {
-	  prevent_destroy = true
-	}
+	# lifecycle {
+	#   prevent_destroy = true
+	# }
 }
 # Enable versioning so you can see the full revision history of your state files
 resource "aws_s3_bucket_versioning" "enabled" {
