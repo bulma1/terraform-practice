@@ -14,6 +14,12 @@ resource "aws_launch_template" "example" {
   instance_type           = "t2.micro"
   #fix bug Unsupported agrument
   vpc_security_group_ids  =  [aws_security_group.instance.id]
+
+  user_data = templatefile("user-data.sh",{
+    server_port = var.server_port
+    db_address = data.terraform_remote_state.db.outputs.address
+    db_port     = data.terraform_remote_state.db.outputs.port
+  })
   # security_groups         = [aws_security_group.instance.id]
   # user_data = <<-EOF
   #             #!/bin/bash
@@ -22,12 +28,12 @@ resource "aws_launch_template" "example" {
   #             EOF
   # Fix error encode base64 user data
   # Manually Base64-encode the user data if needed
-  user_data = base64encode(<<-EOF
-            #!/bin/bash
-            echo "Hello, World" > /var/www/html/index.html
-            nohup busybox httpd -f -p ${var.server_port} &
-            EOF
-  )          
+  # user_data = base64encode(<<-EOF
+  #           #!/bin/bash
+  #           echo "Hello, World" > /var/www/html/index.html
+  #           nohup busybox httpd -f -p ${var.server_port} &
+  #           EOF
+  # )          
   # Required when using a launch configuration with an auto scaling group. 
 
   lifecycle {
