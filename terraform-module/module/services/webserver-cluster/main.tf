@@ -33,7 +33,8 @@ resource "aws_launch_template" "example" {
   #           echo "Hello, World" > /var/www/html/index.html
   #           nohup busybox httpd -f -p ${var.server_port} &
   #           EOF
-  # )          
+  # ) 
+           
   # Required when using a launch configuration with an auto scaling group. 
 
   lifecycle {
@@ -59,7 +60,7 @@ resource "aws_autoscaling_group" "example" {
   }
 }
 resource "aws_security_group" "instance" {
-  name = var.instance_security_group_name
+  name = "${var.cluster_name}-instance"
 
   ingress {
     from_port = 22
